@@ -1,0 +1,567 @@
+1)Write a script to find the greatest of three numbers (numbers passed as command line parameters).
+
+if [ $1 -gt $2 -a $1 -gt $3]; then 
+   echo "maximum is " $1
+elif [ $2 -gt $3 -a $2 -gt $1]; then 
+   echo " maximum is " $2
+else
+   echo "maximum is "$3
+fi   
+
+*create a variable and use it in code*
+name="Deepika"
+echo"Hey, $name!"
+
+2)Write a script to check whether the given no. is even/odd.
+
+echo "Enter a number:"
+read number
+
+# Check if the number is even or odd using the modulus operator
+if [ $((number % 2)) -eq 0 ]; then
+    echo "$number is even."
+else
+    echo "$number is odd."
+fi
+
+4)Write a script to check whether the given number is prime or not.
+
+echo "Enter a number:"
+read number
+
+# Check if the number is less than 2
+if [ $number -lt 2 ]; then
+    echo "$number is not a prime number."
+    exit 0
+fi
+
+# Initialize a flag to indicate if the number is prime
+is_prime=1
+
+# Loop from 2 to the square root of the number
+for (( i=2; i*i<=number; i++ ))
+do
+    if [ $((number % i)) -eq 0 ]; then
+        is_prime=0
+        break
+    fi
+done
+
+# Check the flag to determine if the number is prime
+if [ $is_prime -eq 1 ]; then
+    echo "$number is a prime number."
+else
+    echo "$number is not a prime number."
+fi
+
+3) Write a script to calculate the average of n numbers.
+
+echo "Enter the number of numbers"
+read n
+sum=0
+i=1
+while [ $i  -le $n ]
+do
+ echo "enter num $i "
+ read x
+ sum="$(($sum+$x))"
+ i="$(($i+1))"
+done
+echo "average of $n numbers is $(($sum/$n))"
+
+7)Write a script to print the Fibonacci series up to n terms.
+
+echo "Enter the number of terms: "
+read n
+a=0
+b=1
+echo "The Fibonacci sequence is:"
+for (( i=0; i<n; i++ ))
+do
+    echo -n "$a "
+    fn=$((a + b))
+    a=$b
+    b=$fn
+done
+echo
+
+9) Write a script to calculate the sum of digits of the given number.
+
+echo "Enter a number: "
+read n
+sum=0
+while [ $n -gt 0 ]
+do
+    digit=$((n % 10))
+    sum=$((sum + digit))
+    n=$((n / 10))
+done
+echo "The sum of the digits is: $sum"
+
+12)Write a shell script to echo the string length of the given string as argument.
+
+if [ -z "$1" ]; then
+    echo "No string provided. Please provide a string as an argument."
+    exit 1
+fi
+string_length=${#1}
+echo "The length of the string '$1' is: $string_length"
+
+8)Write a script to calculate the factorial of a given number.
+
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <number>"
+    exit 1
+fi
+
+# Read the input number
+num=$1
+
+# Validate that the input is a non-negative integer
+if ! [[ "$num" =~ ^[0-9]+$ ]]; then
+    echo "Please enter a non-negative integer."
+    exit 1
+fi
+
+# Initialize factorial
+factorial=1
+
+# Calculate factorial using a loop
+for (( i=1; i<=num; i++ )); do
+    factorial=$((factorial * i))
+done
+
+# Print the result
+echo "Factorial of $num is $factorial"
+
+10)Write a script to check whether the given string is a palindrome.
+
+read -p 'Enter a string: ' S
+l=${#S}
+k=$((l - 1))
+n=0
+
+
+for ((i=0; i<l/2; i++))
+do
+    if [[ ${S:i:1} == ${S:k:1} ]]; then
+        n=$((n + 1))
+    fi
+    k=$((k - 1))
+done
+
+
+if [[ $n -eq $((l / 2)) ]]; then
+    echo "$S is a palindrome"
+else
+    echo "$S is not a palindrome"
+fi
+
+
+6)Write a script to compute no. of characters and words in each line of given file.
+
+file_path="/home/document/demo.txt"
+no_of_lines='wc_ _lines<$file_path'
+no_of_words='wc_ _ word<$file_path'
+echo "Number of lines : $no_of_lines"
+echo"Number of words: $no_of_words"
+
+5)Write a script to check whether the given input is a number or a string.
+
+read -p "Type a number or a string: " input
+if [[ $input =~ ^[+-]?[0-9]+$ ]]; then
+    echo "Input is an integer."
+elif [[ $input =~ ^[+-]?[0-9]+\.[0-9]*$ ]]; then
+    echo "Input is a float."
+else
+    echo "Input is a string."
+fi
+
+12)Write a shell script to echo the string length of the given string as argument.
+
+if [ -z "$1" ]; then
+    echo "No string provided."
+    exit 1
+fi
+string_len=${#1}
+echo "The length of the string '$1' is: $string_len."
+
+16)Write a shell script to check the spellings of any text document given as an argument.
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <file_name>"
+    exit 1
+fi
+FILE=$1
+if [ ! -f "$FILE" ]; then
+    echo "Error: File '$FILE' does not exist."
+    exit 1
+fi
+
+# Perform spell check on the file and display misspelled words
+echo "Checking spelling in '$FILE'..."
+aspell list < "$FILE"
+
+# Optionally, count and display the number of misspelled words
+misspelled_count=$(aspell list < "$FILE" | wc -l)
+echo "Number of misspelled words: $misspelled_count"
+
+17)Write a shell script to encrypt any text file.
+
+echo -n "Enter a file name: "
+read file
+
+if [ ! -f "$file" ]; then
+    echo "$file not a file!"
+    exit 1
+fi
+
+echo -n "Enter a Password: "
+read -s password
+echo
+
+# Use openssl for encryption with -pbkdf2
+openssl enc -aes-256-cbc -salt -pbkdf2 -in "$file" -out "$file.cpy" -k "$password"
+
+if [ $? -eq 0 ]; then
+    echo "$file.cpy created as encrypted file"
+else
+    echo "Error: Encryption failed"
+    exit 2
+fi
+
+19)Write a shell script which reads the contents in a text file and removes all the blank spaces in them
+and redirects the output to a file.
+
+if [ $# -ne 2 ]; then
+    echo "Usage: $0 <input-file> <output-file>"
+    exit 1
+fi
+
+# Get the input and output filenames
+input_file=$1
+output_file=$2
+
+# Check if the input file exists
+if [ ! -f "$input_file" ]; then
+    echo "Error: File '$input_file' does not exist."
+    exit 1
+fi
+
+# Remove all blank spaces (spaces, tabs, and newlines) and redirect the output
+tr -d '[:space:]' < "$input_file" > "$output_file"
+
+# Confirm successful processing
+echo "All blank spaces have been removed. Output saved to '$output_file'."
+
+20)Write a shell script to translate all the characters to lower case in a given text file.
+
+if [ "$#" -ne 1 ]; then
+  echo "Usage: $0 <filename>"
+  exit 1
+fi
+
+# Assign the input file to a variable
+input_file=$1
+
+# Check if the file exists and is readable
+if [ ! -f "$input_file" ]; then
+  echo "Error: $input_file does not exist."
+  exit 1
+fi
+
+# Create a temporary file to store the result
+temp_file=$(mktemp)
+
+# Convert all characters to lowercase and write to the temporary file
+tr '[:upper:]' '[:lower:]' < "$input_file" > "$temp_file"
+
+# Overwrite the original file with the result
+mv "$temp_file" "$input_file"
+
+# Confirm the conversion
+echo "All characters in '$input_file' have been converted to lowercase."
+
+11)Write a shell script that accepts a string from the terminal and echo a suitable message if it doesn’t
+have at least 5 characters including the other symbols.
+
+echo "Enter a string:"
+read input
+
+# Check the length of the string
+if [ ${#input} -lt 5 ]; then
+    echo "The string does not have at least 5 characters."
+else
+    echo "The string has at least 5 characters."
+fi
+
+13) Write a shell script that accepts two directory names as arguments and deletes those files in the
+first directory which are similarly named in the second directly. Note: Contents should also match
+inside the files.
+
+if [ "$#" -ne 2 ]; then
+  echo "Usage: $0 <directory1> <directory2>"
+  exit 1
+fi
+
+# Assign arguments to variables
+DIR1=$1
+DIR2=$2
+
+# Check if DIR1 is a valid directory
+if [ ! -d "$DIR1" ]; then
+  echo "Error: $DIR1 is not a directory."
+  exit 1
+fi
+
+# Check if DIR2 is a valid directory
+if [ ! -d "$DIR2" ]; then
+  echo "Error: $DIR2 is not a directory."
+  exit 1
+fi
+
+# Loop through each file in DIR1
+for file1 in "$DIR1"/*; do
+  filename=$(basename "$file1")
+  
+  # Check if a file with the same name exists in DIR2
+  if [ -f "$DIR2/$filename" ]; then
+    # Compare files, and if they are identical, delete the one in DIR1
+    if cmp -s "$file1" "$DIR2/$filename"; then
+      echo "Deleting $file1 (matches $DIR2/$filename)"
+      rm "$file1"
+    fi
+  fi
+done
+
+echo "Matching files deleted from $DIR1."
+
+14)Write a shell script to display the 
+.0
+processes running on the system for every 30 seconds, but only
+for 3 times.
+
+for ((i=1; i<=3; i++)); do
+    echo "Iteration $i: Processes running on the system at $(date):"
+    ps -e  # Display all running processes
+    echo "---------------------------------------"
+    
+    # Pause for 30 seconds after each iteration, except the last one
+    if [ $i -lt 3 ]; then
+        sleep 30
+    fi
+done
+
+15)Write a shell script that displays the last modification time of any file.
+
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <filename>"
+    exit 1
+fi
+
+# Get the filename from the argument
+filename=$1
+
+# Check if the file exists
+if [ ! -f "$filename" ]; then
+    echo "Error: File '$filename' does not exist."
+    exit 1
+fi
+
+# Display the last modification time of the file
+mod_time=$(stat -c %y "$filename")
+echo "The last modification time of the file '$filename' is: $mod_time"
+
+18) Combine the above commands in a shell script so that you have a small program for extracting a
+wordlist.
+
+20) Write a shell script that changes the name of the files passed as arguments to lowercase.
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <filename>"
+    exit 1
+fi
+
+# Get the original filename
+original_filename=$1
+
+# Check if the file exists
+if [ ! -f "$original_filename" ]; then
+    echo "Error: File '$original_filename' does not exist."
+    exit 1
+fi
+
+# Convert the filename to lowercase
+lowercase_filename=$(echo "$original_filename" | tr '[:upper:]' '[:lower:]')
+
+# Check if the lowercase name is different
+if [ "$original_filename" = "$lowercase_filename" ]; then
+    echo "The filename is already in lowercase: $original_filename"
+    exit 0
+fi
+
+# Rename the file
+mv "$original_filename" "$lowercase_filename"
+
+# Confirm the renaming
+echo "The file has been renamed to: $lowercase_filename"
+
+21)Write a shell script to translate all the characters to lower case in a given text file.
+
+#!/bin/bash
+
+# Check if exactly one argument (file name) is provided
+if [ "$#" -ne 1 ]; then
+  echo "Usage: $0 <filename>"
+  exit 1
+fi
+
+# Assign the input file to a variable
+input_file=$1
+
+# Check if the file exists and is readable
+if [ ! -f "$input_file" ]; then
+  echo "Error: $input_file does not exist."
+  exit 1
+fi
+
+# Create a temporary file to store the result
+temp_file=$(mktemp)
+
+# Translate all characters to lowercase and write to the temporary file
+tr '[:upper:]' '[:lower:]' < "$input_file" > "$temp_file"
+
+# Overwrite the original file with the result
+mv "$temp_file" "$input_file"
+
+# Confirm the conversion
+echo "All characters in '$input_file' have been converted to lowercase."
+
+
+22)Write a shell script to combine any three text files into a single file (append them in the order as
+they appear in the arguments) and display the word count.
+
+if [ $# -ne 3 ]; then
+    echo "Usage: $0 <file1> <file2> <file3>"
+    exit 1
+fi
+
+# Get the filenames from the arguments
+file1=$1
+file2=$2
+file3=$3
+
+# Check if all the files exist
+if [ ! -f "$file1" ]; then
+    echo "Error: File '$file1' does not exist."
+    exit 1
+fi
+
+if [ ! -f "$file2" ]; then
+    echo "Error: File '$file2' does not exist."
+    exit 1
+fi
+
+if [ ! -f "$file3" ]; then
+    echo "Error: File '$file3' does not exist."
+    exit 1
+fi
+
+# Combine the files into a new file (e.g., combined.txt)
+combined_file="combined.txt"
+cat "$file1" "$file2" "$file3" > "$combined_file"
+
+# Display the word count of the combined file
+word_count=$(wc -w < "$combined_file")
+echo "The word count of the combined file is: $word_count"
+
+23)Write a shell script that, given a file name as the argument will write the even numbered line to a
+file with name evenfile and odd numbered lines to a file called oddfile.
+
+if [ "$#" -ne 1 ]; then
+  echo "Usage: $0 <filename>"
+  exit 1
+fi
+
+# Assign the input file to a variable
+input_file=$1
+
+# Check if the file exists and is readable
+if [ ! -f "$input_file" ]; then
+  echo "Error: $input_file does not exist."
+  exit 1
+fi
+
+# Read the file line by line
+line_number=1
+while IFS= read -r line; do
+  if [ $((line_number % 2)) -eq 0 ]; then
+    # Even numbered line
+    echo "$line" >> evenfile
+  else
+    # Odd numbered line
+    echo "$line" >> oddfile
+  fi
+  line_number=$((line_number + 1))
+done < "$input_file"
+
+echo "Even-numbered lines written to 'evenfile'."
+echo "Odd-numbered lines written to 'oddfile'."
+
+24)Write a shell script which deletes all the even numbered lines in a text file.
+
+#!/bin/bash
+
+# Check if exactly one argument (file name) is provided
+if [ "$#" -ne 1 ]; then
+  echo "Usage: $0 <filename>"
+  exit 1
+fi
+
+# Assign the input file to a variable
+input_file=$1
+
+# Check if the file exists and is readable
+if [ ! -f "$input_file" ]; then
+  echo "Error: $input_file does not exist."
+  exit 1
+fi
+
+# Create a temporary file to store the result
+temp_file=$(mktemp)
+
+# Use awk to filter out even-numbered lines
+awk 'NR % 2 == 1' "$input_file" > "$temp_file"
+
+# Overwrite the original file with the result
+mv "$temp_file" "$input_file"
+
+echo "All even-numbered lines deleted from $input_file."
+
+25)Write a script called hello which outputs the following: • your username • the time and date • who
+is logged on • also output a line of asterices (*********) after each section.
+
+# Get the username
+username=$(whoami)
+
+# Get the current date and time
+current_datetime=$(date)
+
+# Get the list of users currently logged in
+logged_in_users=$(who)
+
+# Output the username
+echo "Username: $username"
+echo "*******"
+
+# Output the current date and time
+echo "Current date and time: $current_datetime"
+echo "*******"
+
+# Output the users who are logged in
+echo "Users logged in:"
+echo "$logged_in_users"
+echo "*******"
+
+
+
+********************************END*************************************
